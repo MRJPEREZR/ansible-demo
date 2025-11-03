@@ -1,6 +1,6 @@
 ---
 - name: Test WinRM connection to Windows VM
-  hosts: windows
+  hosts: windows_server
   gather_facts: no
   roles:
     - test_winrm

@@ -1,0 +1,6 @@
+---
+- name: Test WinRM connection to Windows VM
+  hosts: windows
+  gather_facts: no
+  roles:
+    - test_winrm

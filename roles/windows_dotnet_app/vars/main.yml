@@ -1,0 +1,1 @@
+db_connection_string: "Server=localhost;Database=MyAppDb;User Id=sa;Password=YourStrong!Passw0rd;"

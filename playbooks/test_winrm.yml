@@ -3,4 +3,4 @@
   hosts: windows_server
   gather_facts: no
   roles:
-    - test_winrm
+    - ../roles/test_winrm

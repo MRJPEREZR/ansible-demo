@@ -3,4 +3,4 @@
   hosts: windows_server
   gather_facts: yes
   roles:
-    - windows_dotnet_app
+    - ../roles/windows_dotnet_app

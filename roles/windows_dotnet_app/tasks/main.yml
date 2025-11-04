@@ -4,42 +4,7 @@
     name: NET-Framework-45-Core
     state: present
 
-- name: Create application directory
-  win_file:
-    path: C:\inetpub\myapp
-    state: directory
-
-- name: Copy application files
-  win_copy:
-    src: myapp.zip
-    dest: C:\inetpub\myapp\myapp.zip
-
-- name: Unzip application
-  win_unzip:
-    src: C:\inetpub\myapp\myapp.zip
-    dest: C:\inetpub\myapp
-    remote_src: yes
-
-- name: Deploy appsettings.json
-  template:
-    src: appsettings.json.j2
-    dest: C:\inetpub\myapp\appsettings.json
-
 - name: Ensure IIS is installed
   win_feature:
     name: Web-Server
     state: present
-
-- name: Ensure app pool exists
-  win_iis_app_pool:
-    name: MyAppPool
-    state: started
-    managed_runtime_version: "v4.0"
-
-- name: Ensure website exists
-  win_iis_website:
-    name: MyDotNetApp
-    state: started
-    physical_path: C:\inetpub\myapp
-    application_pool: MyAppPool
-    port: 80

@@ -8,3 +8,59 @@
   win_feature:
     name: Web-Server
     state: present
+
+- name: Ensure temp folder exists
+  win_file:
+    path: C:\Temp
+    state: directory
+
+- name: Download DemoApp.zip
+  get_url:
+    url: "https://storageaccountvmdemo1.blob.core.windows.net/blobdemo/DemoApp.zip?se=2026-12-31T23%3A59%3A00Z&sp=r&sv=2022-11-02&sr=b&sig=b4oTGPXaQdMNjfgwgiQvpg%2FcLAgcoiiLKd8sGZIsIrc%3D"
+    dest: "C:\\Temp\\DemoApp.zip"
+  register: download_result
+
+- name: Check if download was successful
+  win_stat:
+    path: C:\Temp\DemoApp.zip
+  register: zip_file
+
+- name: Fail if download failed
+  fail:
+    msg: "Failed to download DemoApp.zip"
+  when: not zip_file.stat.exists
+
+- name: Unzip DemoApp.zip
+  win_unzip:
+    src: C:\Temp\DemoApp.zip
+    dest: C:\inetpub\wwwroot\DemoApp
+    removes: C:\inetpub\wwwroot\DemoApp
+
+- name: Create a new IIS website for DemoApp
+  win_iis_website:
+    name: DemoAppSite
+    state: started
+    physical_path: C:\inetpub\wwwroot\DemoApp
+    port: 8080
+
+- name: Open port 8080 in Windows Firewall
+  win_firewall_rule:
+    name: "Allow HTTP Port 8080"
+    enable: yes
+    localport: 8080
+    protocol: TCP
+    action: allow
+    direction: in
+
+- name: Verify website is running
+  wait_for:
+    host: localhost
+    port: 8080
+    state: started
+    delay: 10
+    timeout: 60
+  register: website_check
+
+- name: Display success message
+  debug:
+    msg: "DemoApp successfully deployed and running on http://localhost:8080"

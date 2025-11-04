@@ -1,0 +1,28 @@
+---
+- name: Stop and remove DemoApp website
+  win_iis_website:
+    name: DemoAppSite
+    state: absent
+  ignore_errors: yes
+
+- name: Remove firewall rule for port 8080
+  win_firewall_rule:
+    name: "Allow HTTP Port 8080"
+    state: absent
+  ignore_errors: yes
+
+- name: Remove application files
+  win_file:
+    path: C:\inetpub\wwwroot\DemoApp
+    state: absent
+  ignore_errors: yes
+
+- name: Remove downloaded zip file
+  win_file:
+    path: C:\Temp\DemoApp.zip
+    state: absent
+  ignore_errors: yes
+
+- name: Verify cleanup completed
+  debug:
+    msg: "DemoApp deployment has been completely removed. You can now rerun the deployment playbook."

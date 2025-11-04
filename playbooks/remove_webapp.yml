@@ -1,0 +1,6 @@
+---
+- name: Remove webapp folder and IIS confs
+  hosts: windows_server
+  gather_facts: no
+  roles:
+    - ../roles/windows_cleanup

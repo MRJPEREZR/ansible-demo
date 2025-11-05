@@ -15,7 +15,7 @@
     state: directory
 
 - name: Download DemoApp.zip
-  get_url:
+  win_get_url:
     url: "https://storageaccountvmdemo1.blob.core.windows.net/blobdemo/DemoApp.zip?se=2026-12-31T23%3A59%3A00Z&sp=r&sv=2022-11-02&sr=b&sig=b4oTGPXaQdMNjfgwgiQvpg%2FcLAgcoiiLKd8sGZIsIrc%3D"
     dest: "C:\\Temp\\DemoApp.zip"
   register: download_result

@@ -10,7 +10,7 @@
 
 - name: Download .NET 8 runtime installer if missing
   win_get_url:
-    url: https://aka.ms/dotnet-core-applaunch?framework=Microsoft.NETCore.App&framework_version=8.0.0&arch=x64&rid=win10-x64
+    url: https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/8.0.21/dotnet-hosting-8.0.21-win.exe
     dest: C:\Temp\dotnet-runtime-8.0.exe
   when: not dotnet8_installed
 

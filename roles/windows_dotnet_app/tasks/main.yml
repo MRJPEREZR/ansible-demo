@@ -10,7 +10,7 @@
 
 - name: Download .NET 8 runtime installer if missing
   win_get_url:
-    url: https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-8.0.0-windows-x64-installer
+    url: https://aka.ms/dotnet-core-applaunch?framework=Microsoft.NETCore.App&framework_version=8.0.0&arch=x64&rid=win10-x64
     dest: C:\Temp\dotnet-runtime-8.0.exe
   when: not dotnet8_installed
 
@@ -87,7 +87,7 @@
 
 - name: Restart IIS
   win_shell: iisreset
-  
+
 - name: Verify website is running
   win_wait_for:
     host: localhost

@@ -85,6 +85,9 @@
     action: allow
     direction: in
 
+- name: Restart IIS
+  win_shell: iisreset
+  
 - name: Verify website is running
   win_wait_for:
     host: localhost
@@ -93,9 +96,6 @@
     delay: 10
     timeout: 60
   register: website_check
-
-- name: Restart IIS
-  win_shell: iisreset
 
 - name: Display success message
   debug:

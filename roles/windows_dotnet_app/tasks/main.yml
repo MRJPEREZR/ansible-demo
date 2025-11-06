@@ -1,8 +1,34 @@
 ---
-- name: Ensure .NET Runtime is installed
-  win_feature:
-    name: NET-Framework-45-Core
-    state: present
+- name: Check installed .NET runtimes
+  win_shell: dotnet --list-runtimes
+  register: dotnet_runtimes
+  ignore_errors: yes
+
+- name: Set flag if .NET 8 runtime is installed
+  set_fact:
+    dotnet8_installed: "{{ 'Microsoft.NETCore.App 8.0' in dotnet_runtimes.stdout }}"
+
+- name: Download .NET 8 runtime installer if missing
+  win_get_url:
+    url: https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-8.0.0-windows-x64-installer
+    dest: C:\Temp\dotnet-runtime-8.0.exe
+  when: not dotnet8_installed
+
+- name: Install .NET 8 runtime silently
+  win_shell: C:\Temp\dotnet-runtime-8.0.exe /quiet /norestart
+  args:
+    creates: 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.0'
+  when: not dotnet8_installed
+
+- name: Remove installer
+  win_file:
+    path: C:\Temp\dotnet-runtime-8.0.exe
+    state: absent
+  when: not dotnet8_installed
+
+- name: Verify .NET runtime installed
+  win_shell: dotnet --list-runtimes
+  register: dotnet_runtimes_after
 
 - name: Ensure IIS is installed
   win_feature:
@@ -67,6 +93,9 @@
     delay: 10
     timeout: 60
   register: website_check
+
+- name: Restart IIS
+  win_shell: iisreset
 
 - name: Display success message
   debug:

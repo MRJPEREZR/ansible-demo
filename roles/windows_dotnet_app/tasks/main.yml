@@ -33,6 +33,12 @@
 - name: Unzip DemoApp.zip
   win_unzip:
     src: C:\Temp\DemoApp.zip
+    dest: C:\Temp\DemoApp
+    removes: C:\Temp\DemoApp
+
+- name: Copy published files
+  win_copy:
+    src: C:\Temp\DemoApp\publish\
     dest: C:\inetpub\wwwroot\DemoApp
     removes: C:\inetpub\wwwroot\DemoApp
 
